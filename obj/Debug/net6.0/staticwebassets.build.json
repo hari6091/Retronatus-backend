@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "wmcUuaKh9j2m6iwCAAKXzU/gfKyoxFNL3j/aH9gB6OA=",
+  "Source": "retronatus-backend",
+  "BasePath": "_content/retronatus-backend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
