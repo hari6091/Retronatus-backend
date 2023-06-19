@@ -29,7 +29,7 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult<IEnumerable<Comentario>> Get()
         {
-            var comentario = _context.Comentario;
+            var comentario = _context.Comentario.Include(c => c.Respostas);
             if (comentario is null)
             {
                 return NotFound();
@@ -41,7 +41,7 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult<Comentario> Get(int id)
         {
-            var comentario = _context.Comentario;
+            var comentario = _context.Comentario.Include(c => c.Respostas);;
 
             if (comentario is null)
             {
@@ -62,14 +62,23 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult Post(Comentario comentario)
         {
-            if (_context.Comentario is null)
+            if (_context.Comentario is null || _context.Publicacao is null)
             {
                 return BadRequest(
-                    "A tabela 'Comentario' não está configurada corretamente no contexto."
+                    "As tabelas 'Comentario' e 'Publicacao' não estão configuradas corretamente no contexto."
                 );
             }
 
+            var publicacao = _context.Publicacao.Find(comentario.IdPublicacao);
+
+            if (publicacao is null)
+            {
+                return NotFound("Publicacao não encontrada.");
+            }
+
             _context.Comentario.Add(comentario);
+            publicacao.Comentarios ??= new List<Comentario>();
+            publicacao.Comentarios.Add(comentario);
             _context.SaveChanges();
 
             return new CreatedAtRouteResult(

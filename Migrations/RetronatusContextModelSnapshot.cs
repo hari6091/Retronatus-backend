@@ -65,26 +65,15 @@ namespace retronatus_backend.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idusuario");
 
-                    b.Property<int?>("idpublicacao")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("idusuario")
-                        .HasColumnType("integer");
+                    b.Property<int?>("PublicacaoIdPublicacao")
+                        .HasColumnType("integer")
+                        .HasColumnName("publicacaoidpublicacao");
 
                     b.HasKey("IdComentario");
 
-                    b.HasIndex("idpublicacao");
+                    b.HasIndex("PublicacaoIdPublicacao");
 
-                    b.HasIndex("idusuario");
-
-                    b.ToTable("comentario", t =>
-                        {
-                            t.Property("idpublicacao")
-                                .HasColumnName("idpublicacao1");
-
-                            t.Property("idusuario")
-                                .HasColumnName("idusuario1");
-                        });
+                    b.ToTable("comentario");
                 });
 
             modelBuilder.Entity("retronatus_backend.Model.Local", b =>
@@ -122,6 +111,10 @@ namespace retronatus_backend.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idpublicacao");
 
+                    b.Property<int?>("PublicacaoIdPublicacao")
+                        .HasColumnType("integer")
+                        .HasColumnName("publicacaoidpublicacao");
+
                     b.Property<string>("Source")
                         .HasColumnType("text")
                         .HasColumnName("source");
@@ -130,18 +123,11 @@ namespace retronatus_backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("type");
 
-                    b.Property<int?>("idpublicacao")
-                        .HasColumnType("integer");
-
                     b.HasKey("IdMedia");
 
-                    b.HasIndex("idpublicacao");
+                    b.HasIndex("PublicacaoIdPublicacao");
 
-                    b.ToTable("media", t =>
-                        {
-                            t.Property("idpublicacao")
-                                .HasColumnName("idpublicacao1");
-                        });
+                    b.ToTable("media");
                 });
 
             modelBuilder.Entity("retronatus_backend.Model.Publicacao", b =>
@@ -152,6 +138,10 @@ namespace retronatus_backend.Migrations
                         .HasColumnName("idpublicacao");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdPublicacao"));
+
+                    b.Property<int?>("CategoriaIdCategoria")
+                        .HasColumnType("integer")
+                        .HasColumnName("categoriaidcategoria");
 
                     b.Property<string>("Content")
                         .HasColumnType("text")
@@ -185,38 +175,15 @@ namespace retronatus_backend.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("usuarioidusuario");
 
-                    b.Property<int?>("idcategoria")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("idlocal")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("idusuario")
-                        .HasColumnType("integer");
-
                     b.HasKey("IdPublicacao");
+
+                    b.HasIndex("CategoriaIdCategoria");
 
                     b.HasIndex("LocalIdLocal");
 
                     b.HasIndex("UsuarioIdUsuario");
 
-                    b.HasIndex("idcategoria");
-
-                    b.HasIndex("idlocal");
-
-                    b.HasIndex("idusuario");
-
-                    b.ToTable("publicacao", t =>
-                        {
-                            t.Property("idcategoria")
-                                .HasColumnName("idcategoria1");
-
-                            t.Property("idlocal")
-                                .HasColumnName("idlocal1");
-
-                            t.Property("idusuario")
-                                .HasColumnName("idusuario1");
-                        });
+                    b.ToTable("publicacao");
                 });
 
             modelBuilder.Entity("retronatus_backend.Model.Resposta", b =>
@@ -227,6 +194,10 @@ namespace retronatus_backend.Migrations
                         .HasColumnName("idresposta");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdResposta"));
+
+                    b.Property<int?>("ComentarioIdComentario")
+                        .HasColumnType("integer")
+                        .HasColumnName("comentarioidcomentario");
 
                     b.Property<string>("Content")
                         .HasColumnType("text")
@@ -244,26 +215,11 @@ namespace retronatus_backend.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idusuario");
 
-                    b.Property<int?>("idcomentario")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("idusuario")
-                        .HasColumnType("integer");
-
                     b.HasKey("IdResposta");
 
-                    b.HasIndex("idcomentario");
+                    b.HasIndex("ComentarioIdComentario");
 
-                    b.HasIndex("idusuario");
-
-                    b.ToTable("resposta", t =>
-                        {
-                            t.Property("idcomentario")
-                                .HasColumnName("idcomentario1");
-
-                            t.Property("idusuario")
-                                .HasColumnName("idusuario1");
-                        });
+                    b.ToTable("resposta");
                 });
 
             modelBuilder.Entity("retronatus_backend.Model.Usuario", b =>
@@ -300,22 +256,22 @@ namespace retronatus_backend.Migrations
                 {
                     b.HasOne("retronatus_backend.Model.Publicacao", null)
                         .WithMany("Comentarios")
-                        .HasForeignKey("idpublicacao");
-
-                    b.HasOne("retronatus_backend.Model.Usuario", null)
-                        .WithMany()
-                        .HasForeignKey("idusuario");
+                        .HasForeignKey("PublicacaoIdPublicacao");
                 });
 
             modelBuilder.Entity("retronatus_backend.Model.Media", b =>
                 {
                     b.HasOne("retronatus_backend.Model.Publicacao", null)
                         .WithMany("Medias")
-                        .HasForeignKey("idpublicacao");
+                        .HasForeignKey("PublicacaoIdPublicacao");
                 });
 
             modelBuilder.Entity("retronatus_backend.Model.Publicacao", b =>
                 {
+                    b.HasOne("retronatus_backend.Model.Categoria", null)
+                        .WithMany("Publicacoes")
+                        .HasForeignKey("CategoriaIdCategoria");
+
                     b.HasOne("retronatus_backend.Model.Local", null)
                         .WithMany("Publicacoes")
                         .HasForeignKey("LocalIdLocal");
@@ -323,29 +279,13 @@ namespace retronatus_backend.Migrations
                     b.HasOne("retronatus_backend.Model.Usuario", null)
                         .WithMany("Publicacoes")
                         .HasForeignKey("UsuarioIdUsuario");
-
-                    b.HasOne("retronatus_backend.Model.Categoria", null)
-                        .WithMany("Publicacoes")
-                        .HasForeignKey("idcategoria");
-
-                    b.HasOne("retronatus_backend.Model.Local", null)
-                        .WithMany()
-                        .HasForeignKey("idlocal");
-
-                    b.HasOne("retronatus_backend.Model.Usuario", null)
-                        .WithMany()
-                        .HasForeignKey("idusuario");
                 });
 
             modelBuilder.Entity("retronatus_backend.Model.Resposta", b =>
                 {
                     b.HasOne("retronatus_backend.Model.Comentario", null)
                         .WithMany("Respostas")
-                        .HasForeignKey("idcomentario");
-
-                    b.HasOne("retronatus_backend.Model.Usuario", null)
-                        .WithMany()
-                        .HasForeignKey("idusuario");
+                        .HasForeignKey("ComentarioIdComentario");
                 });
 
             modelBuilder.Entity("retronatus_backend.Model.Categoria", b =>

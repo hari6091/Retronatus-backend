@@ -41,7 +41,7 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult<IEnumerable<Usuario>> Get()
         {
-            var usuario = _context.Usuario;
+            var usuario = _context.Usuario.Include(u => u.Publicacoes);
             if (usuario is null)
             {
                 return NotFound();
@@ -53,7 +53,7 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult<Usuario> Get(int id)
         {
-            var usuario = _context.Usuario;
+            var usuario = _context.Usuario.Include(u => u.Publicacoes);
 
             if (usuario is null)
             {

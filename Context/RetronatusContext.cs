@@ -17,6 +17,8 @@ namespace retronatus_backend.Context
         public DbSet<Local>? Local { get; set; }
         public DbSet<Publicacao>? Publicacao { get; set; }
         public DbSet<Usuario>? Usuario { get; set; }
+        public DbSet<Resposta>? Resposta { get; set; }
+        public DbSet<Media>? Media { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

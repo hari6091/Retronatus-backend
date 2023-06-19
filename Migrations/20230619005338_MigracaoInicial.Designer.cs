@@ -12,7 +12,7 @@ using retronatus_backend.Context;
 namespace retronatus_backend.Migrations
 {
     [DbContext(typeof(RetronatusContext))]
-    [Migration("20230612173235_MigracaoInicial")]
+    [Migration("20230619005338_MigracaoInicial")]
     partial class MigracaoInicial
     {
         /// <inheritdoc />

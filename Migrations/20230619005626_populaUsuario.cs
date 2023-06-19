@@ -37,7 +37,7 @@ namespace retronatus_backend.Migrations
             migrationBuilder.DeleteData(
                 table: "usuario",
                 keyColumn: "idusuario",
-                keyValues: new object[] { 1, 2, 3 }
+                keyValues: new object[] { 1, 2 }
             );
         }
     }

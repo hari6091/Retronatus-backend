@@ -29,7 +29,7 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult<IEnumerable<Publicacao>> Get()
         {
-            var publicacao = _context.Publicacao;
+            var publicacao = _context.Publicacao.Include(p => p.Comentarios).Include(p => p.Medias);
             if (publicacao is null)
             {
                 return NotFound();
@@ -41,7 +41,7 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult<Publicacao> Get(int id)
         {
-            var publicacao = _context.Publicacao;
+            var publicacao = _context.Publicacao.Include(p => p.Comentarios).Include(p => p.Medias);
 
             if (publicacao is null)
             {
@@ -62,14 +62,53 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult Post(Publicacao publicacao)
         {
-            if (_context.Publicacao is null)
+            if (
+                publicacao is null
+                || _context.Usuario is null
+                || _context.Local is null
+                || _context.Categoria is null
+            )
             {
-                return BadRequest(
-                    "A tabela 'Publicacao' não está configurada corretamente no contexto."
-                );
+                return BadRequest();
+            }
+
+            if (publicacao.Medias != null && publicacao.Medias.Any())
+            {
+                foreach (var media in publicacao.Medias)
+                {
+                    media.IdPublicacao = publicacao.IdPublicacao;
+                    _context.Media.Add(media);
+                }
+
+                _context.SaveChanges();
+
+                publicacao.Medias = publicacao.Medias;
             }
 
             _context.Publicacao.Add(publicacao);
+
+            var usuario = _context.Usuario.Find(publicacao.IdUsuario);
+            var local = _context.Local.Find(publicacao.IdLocal);
+            var categoria = _context.Categoria.Find(publicacao.IdCategoria);
+
+            if (usuario is not null)
+            {
+                usuario.Publicacoes ??= new List<Publicacao>();
+                usuario.Publicacoes.Add(publicacao);
+            }
+
+            if (local is not null)
+            {
+                local.Publicacoes ??= new List<Publicacao>();
+                local.Publicacoes.Add(publicacao);
+            }
+
+            if (categoria is not null)
+            {
+                categoria.Publicacoes ??= new List<Publicacao>();
+                categoria.Publicacoes.Add(publicacao);
+            }
+
             _context.SaveChanges();
 
             return new CreatedAtRouteResult(
@@ -105,12 +144,16 @@ namespace retronatus_backend.Controllers
                 );
             }
 
-            var publicacao = _context.Publicacao.FirstOrDefault(p => p.IdPublicacao == id);
-
+            var publicacao = _context.Publicacao
+                .Include(p => p.Medias)
+                .FirstOrDefault(p => p.IdPublicacao == id);
+                
             if (publicacao is null)
             {
                 return NotFound();
             }
+
+            _context.Media.RemoveRange(publicacao.Medias);
 
             _context.Publicacao.Remove(publicacao);
             _context.SaveChanges();

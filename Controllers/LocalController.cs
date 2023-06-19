@@ -29,33 +29,34 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult<IEnumerable<Local>> Get()
         {
-            var local = _context.Local;
-            if (local is null)
+            var locais = _context.Local.Include(l => l.Publicacoes).ToList();
+            if (locais is null)
             {
                 return NotFound();
             }
-            return local.ToList();
+
+            foreach (var local in locais)
+            {
+                local.Publicacoes ??= new List<Publicacao>();
+            }
+
+            return locais;
         }
 
         [HttpGet("{id:int}", Name = "GetLocal")]
         [Authorize]
         public ActionResult<Local> Get(int id)
         {
-            var local = _context.Local;
+            var local = _context.Local
+                .Include(l => l.Publicacoes)
+                .FirstOrDefault(l => l.IdLocal == id);
 
             if (local is null)
             {
                 return NotFound("Local não encontrado!");
             }
 
-            var localEncontrado = local.FirstOrDefault(l => l.IdLocal == id);
-
-            if (localEncontrado is null)
-            {
-                return NotFound("Local não encontrado!");
-            }
-
-            return localEncontrado;
+            return local;
         }
 
         [HttpPost]
@@ -81,13 +82,22 @@ namespace retronatus_backend.Controllers
         {
             if (id != local.IdLocal)
             {
-                return BadRequest();
+                return BadRequest("O ID fornecido não corresponde ao ID do objeto Local.");
             }
 
-            _context.Entry(local).State = EntityState.Modified;
+            var existingLocal = _context.Local.Find(id);
+
+            if (existingLocal is null)
+            {
+                return NotFound("Local não encontrado.");
+            }
+
+            existingLocal.Name = local.Name;
+            existingLocal.Address = local.Address;
+
             _context.SaveChanges();
 
-            return Ok(local);
+            return Ok(existingLocal);
         }
 
         [HttpDelete("{id:int}")]

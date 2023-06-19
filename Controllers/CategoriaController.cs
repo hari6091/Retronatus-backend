@@ -29,19 +29,21 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult<IEnumerable<Categoria>> Get()
         {
-            var categoria = _context.Categoria;
-            if (categoria is null)
+            var categorias = _context.Categoria.Include(c => c.Publicacoes);
+
+            if (categorias is null)
             {
                 return NotFound();
             }
-            return categoria.ToList();
+
+            return categorias.ToList();
         }
 
         [HttpGet("{id:int}", Name = "GetCategoria")]
         [Authorize]
         public ActionResult<Categoria> Get(int id)
         {
-            var categoria = _context.Categoria;
+            var categoria = _context.Categoria.Include(c => c.Publicacoes);
 
             if (categoria is null)
             {

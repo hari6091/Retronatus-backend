@@ -12,8 +12,8 @@ using retronatus_backend.Context;
 namespace retronatus_backend.Migrations
 {
     [DbContext(typeof(RetronatusContext))]
-    [Migration("20230612173300_alteraCases")]
-    partial class alteraCases
+    [Migration("20230619005626_populaUsuario")]
+    partial class populaUsuario
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
