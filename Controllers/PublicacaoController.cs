@@ -59,6 +59,24 @@ namespace retronatus_backend.Controllers
             return publicacaoEncontrada;
         }
 
+        [HttpGet("GetByLocal/{localId:int}", Name = "GetByLocal")]
+        [Authorize]
+        public ActionResult<IEnumerable<Publicacao>> GetByLocal(int localId)
+        {
+            var publicacoes = _context.Publicacao
+                .Include(p => p.Comentarios)
+                .Include(p => p.Medias)
+                .Where(p => p.IdLocal == localId)
+                .ToList();
+
+            if (publicacoes.Count == 0)
+            {
+                return NotFound("Não foram encontradas publicações para o local especificado.");
+            }
+
+            return publicacoes;
+        }
+
         [HttpPost]
         [Authorize]
         public ActionResult Post(Publicacao publicacao)
