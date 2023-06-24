@@ -69,11 +69,6 @@ namespace retronatus_backend.Controllers
                 .Where(p => p.IdLocal == localId)
                 .ToList();
 
-            if (publicacoes.Count == 0)
-            {
-                return NotFound("Não foram encontradas publicações para o local especificado.");
-            }
-
             return publicacoes;
         }
 

@@ -60,6 +60,18 @@ namespace retronatus_backend.Controllers
             return comentarioEncontrado;
         }
 
+        [HttpGet("GetByPublicacao/{publicacaoId:int}", Name = "GetByPublicacao")]
+        [Authorize]
+        public ActionResult<IEnumerable<Comentario>> GetByPublicacao(int publicacaoId)
+        {
+            var comentarios = _context.Comentario
+                .Include(c => c.Respostas)
+                .Where(c => c.IdPublicacao == publicacaoId)
+                .ToList();
+
+            return comentarios;
+        }
+
         [HttpPost]
         [Authorize]
         public ActionResult Post(Comentario comentario)
