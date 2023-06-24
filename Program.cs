@@ -7,7 +7,18 @@ using retronatus_backend.Context;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
+
+var connectionString = "";
+
+if (builder.Environment.IsDevelopment())
+{
+    connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
+}
+else if (builder.Environment.IsProduction())
+{
+    connectionString = builder.Configuration.GetConnectionString("Azure");
+}
+
 builder.Services.AddDbContext<RetronatusContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services

@@ -61,7 +61,7 @@ namespace retronatus_backend.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         public ActionResult Post(Media media)
         {
             if (_context.Media is null)
@@ -82,7 +82,7 @@ namespace retronatus_backend.Controllers
         }
 
         [HttpPut("{id:int}")]
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         public ActionResult Put(int id, Media media)
         {
             if (id != media.IdMedia)
@@ -97,7 +97,7 @@ namespace retronatus_backend.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         public ActionResult Delete(int id)
         {
             if (_context.Media is null)

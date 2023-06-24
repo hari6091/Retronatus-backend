@@ -110,10 +110,29 @@ namespace retronatus_backend.Controllers
         [Authorize]
         public ActionResult Put(int id, Usuario usuario)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized("Usuário logado não identificado");
+            }
+
+            var isAdmin = _context.Usuario.Any(
+                u => u.IdUsuario == int.Parse(userId) && u.Is_Super_Admin
+            );
+            var isOwner = _context.Usuario.Any(
+                u => u.IdUsuario == id && u.IdUsuario == int.Parse(userId)
+            );
+
+            if (!isOwner && !isAdmin)
+            {
+                return Unauthorized("Você não é o proprietário dessa informação!");
+            };
+
             if (id != usuario.IdUsuario)
             {
                 return BadRequest();
-            }
+            };
 
             _context.Entry(usuario).State = EntityState.Modified;
             _context.SaveChanges();
