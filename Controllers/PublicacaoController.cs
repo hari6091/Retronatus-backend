@@ -72,6 +72,19 @@ namespace retronatus_backend.Controllers
             return publicacoes;
         }
 
+        [HttpGet("usuario/{userId:int}", Name = "GetPublicacoesUsuario")]
+        [Authorize]
+        public ActionResult<IEnumerable<Publicacao>> GetPublicacoesUsuario(int userId)
+        {
+            var publicacoes = _context.Publicacao
+                .Include(p => p.Comentarios)
+                .Include(p => p.Medias)
+                .Where(p => p.IdUsuario == userId)
+                .ToList();
+
+            return publicacoes;
+        }
+
         [HttpPost]
         [Authorize]
         public ActionResult Post(Publicacao publicacao)

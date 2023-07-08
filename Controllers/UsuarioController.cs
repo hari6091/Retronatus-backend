@@ -49,6 +49,32 @@ namespace retronatus_backend.Controllers
             return usuario.ToList();
         }
 
+        [HttpGet("me")]
+        [Authorize]
+        public ActionResult<Usuario> GetCurrentUser()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("Usuário não identificado");
+            }
+
+            var usuario = _context.Usuario
+                .Include(u => u.Publicacoes)
+                .ThenInclude(p => p.Comentarios)
+                .Include(u => u.Publicacoes)
+                .ThenInclude(p => p.Medias)
+                .FirstOrDefault(u => u.IdUsuario == int.Parse(userId));
+
+            if (usuario is null)
+            {
+                return NotFound("Usuário não encontrado");
+            }
+
+            return usuario;
+        }
+
         [HttpGet("{id:int}", Name = "GetUsuario")]
         [Authorize]
         public ActionResult<Usuario> Get(int id)
@@ -127,12 +153,14 @@ namespace retronatus_backend.Controllers
             if (!isOwner && !isAdmin)
             {
                 return Unauthorized("Você não é o proprietário dessa informação!");
-            };
+            }
+            ;
 
             if (id != usuario.IdUsuario)
             {
                 return BadRequest();
-            };
+            }
+            ;
 
             _context.Entry(usuario).State = EntityState.Modified;
             _context.SaveChanges();
