@@ -112,7 +112,11 @@ namespace retronatus_backend.Controllers
                 {
                     var nomeMidia = Guid.NewGuid().ToString();
 
-                    var linkMidia = await UploadMidiaParaStorage(midia.Source, nomeMidia);
+                    var base64String = ConvertImageToBase64(midia.Source);
+
+                    midia.Source = base64String;
+
+                    var linkMidia = await UploadMidiaParaStorage(base64String, nomeMidia);
 
                     var novaMidia = new Media
                     {
@@ -161,20 +165,31 @@ namespace retronatus_backend.Controllers
             );
         }
 
+        private string ConvertImageToBase64(string imagePath)
+        {
+            try
+            {
+                byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
+                return Convert.ToBase64String(imageBytes);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    "Erro ao converter imagem para Base64. Detalhes: " + ex.Message
+                );
+            }
+        }
+
         private async Task<string> UploadMidiaParaStorage(string source, string nomeMidia)
         {
-            string storageConnectionString = _configuration["ConnectionStrings:BlobConnectionString"];
-            string containerName = _configuration["ConnectionStrings:BlobContainerName"];
+            string storageConnectionString =
+                "DefaultEndpointsProtocol=https;AccountName=storageretronatus;AccountKey=71FWtm8AhYa7D9gO/wfKak0g7AsXy7eLBN2xZzFtpCfk82ItPJ/JEBItdzTm0EFOgNK0n/7mqehv+AStccF8cA==;EndpointSuffix=core.windows.net";
+            string containerName = "files";
 
-            var blobServiceClient = new BlobServiceClient(storageConnectionString);
-
-            var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
-
-            var blobClient = containerClient.GetBlobClient(nomeMidia);
+            var blobClient = new BlobClient(storageConnectionString, containerName, nomeMidia);
 
             using var stream = new MemoryStream(Convert.FromBase64String(source));
-            await blobClient.UploadAsync(stream, true);
-
+            await blobClient.UploadAsync(stream, overwrite: true);
             return blobClient.Uri.ToString();
         }
 
