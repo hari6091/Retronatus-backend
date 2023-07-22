@@ -19,6 +19,7 @@ namespace retronatus_backend.Context
         public DbSet<Usuario>? Usuario { get; set; }
         public DbSet<Resposta>? Resposta { get; set; }
         public DbSet<Media>? Media { get; set; }
+        public DbSet<Feedback>? Feedback { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

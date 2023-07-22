@@ -76,6 +76,32 @@ namespace retronatus_backend.Migrations
                     b.ToTable("comentario");
                 });
 
+            modelBuilder.Entity("retronatus_backend.Model.Feedback", b =>
+                {
+                    b.Property<int>("IdFeedback")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("idfeedback");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdFeedback"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text")
+                        .HasColumnName("address");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.HasKey("IdFeedback");
+
+                    b.ToTable("feedback");
+                });
+
             modelBuilder.Entity("retronatus_backend.Model.Local", b =>
                 {
                     b.Property<int>("IdLocal")
