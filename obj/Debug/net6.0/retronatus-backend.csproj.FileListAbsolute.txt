@@ -54,3 +54,9 @@
 /home/Hari/if/c#/retronatus-backend/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/Hari/if/c#/retronatus-backend/bin/Debug/net6.0/Microsoft.IdentityModel.Tokens.dll
 /home/Hari/if/c#/retronatus-backend/bin/Debug/net6.0/System.IdentityModel.Tokens.Jwt.dll
+/home/Hari/if/c#/retronatus-backend/bin/Debug/net6.0/Azure.Core.dll
+/home/Hari/if/c#/retronatus-backend/bin/Debug/net6.0/Azure.Storage.Blobs.dll
+/home/Hari/if/c#/retronatus-backend/bin/Debug/net6.0/Azure.Storage.Common.dll
+/home/Hari/if/c#/retronatus-backend/bin/Debug/net6.0/Microsoft.Bcl.AsyncInterfaces.dll
+/home/Hari/if/c#/retronatus-backend/bin/Debug/net6.0/System.IO.Hashing.dll
+/home/Hari/if/c#/retronatus-backend/bin/Debug/net6.0/System.Memory.Data.dll

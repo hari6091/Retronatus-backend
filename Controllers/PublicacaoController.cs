@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +18,17 @@ namespace retronatus_backend.Controllers
     [Route("[controller]")]
     public class PublicacaoController : Controller
     {
+        private readonly IConfiguration _configuration;
         private readonly ILogger<PublicacaoController> _logger;
         private readonly RetronatusContext _context;
 
-        public PublicacaoController(ILogger<PublicacaoController> logger, RetronatusContext context)
+        public PublicacaoController(
+            ILogger<PublicacaoController> logger,
+            RetronatusContext context,
+            IConfiguration configuration
+        )
         {
+            _configuration = configuration;
             _logger = logger;
             _context = context;
         }
@@ -87,7 +94,7 @@ namespace retronatus_backend.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Post(Publicacao publicacao)
+        public async Task<ActionResult> Post(Publicacao publicacao)
         {
             if (
                 publicacao is null
@@ -101,15 +108,24 @@ namespace retronatus_backend.Controllers
 
             if (publicacao.Medias != null && publicacao.Medias.Any())
             {
-                foreach (var media in publicacao.Medias)
+                foreach (var midia in publicacao.Medias)
                 {
-                    media.IdPublicacao = publicacao.IdPublicacao;
-                    _context.Media.Add(media);
+                    var nomeMidia = Guid.NewGuid().ToString();
+
+                    var linkMidia = await UploadMidiaParaStorage(midia.Source, nomeMidia);
+
+                    var novaMidia = new Media
+                    {
+                        Type = midia.Type,
+                        IdPublicacao = publicacao.IdPublicacao,
+                        Source = linkMidia
+                    };
+
+                    publicacao.Medias ??= new List<Media>();
+                    publicacao.Medias.Add(novaMidia);
                 }
 
                 _context.SaveChanges();
-
-                publicacao.Medias = publicacao.Medias;
             }
 
             _context.Publicacao.Add(publicacao);
@@ -143,6 +159,23 @@ namespace retronatus_backend.Controllers
                 new { id = publicacao.IdPublicacao },
                 publicacao
             );
+        }
+
+        private async Task<string> UploadMidiaParaStorage(string source, string nomeMidia)
+        {
+            string storageConnectionString = _configuration["ConnectionStrings:BlobConnectionString"];
+            string containerName = _configuration["ConnectionStrings:BlobContainerName"];
+
+            var blobServiceClient = new BlobServiceClient(storageConnectionString);
+
+            var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            var blobClient = containerClient.GetBlobClient(nomeMidia);
+
+            using var stream = new MemoryStream(Convert.FromBase64String(source));
+            await blobClient.UploadAsync(stream, true);
+
+            return blobClient.Uri.ToString();
         }
 
         [HttpPut("{id:int}")]

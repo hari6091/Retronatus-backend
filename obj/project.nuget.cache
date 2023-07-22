@@ -1,15 +1,19 @@
 {
   "version": 2,
-  "dgSpecHash": "EjXrBerhCXelRlqUtcn0Hn+IhoAWTqjo376gsyuGKXnUTX3tamzwYz9Hvl078TbsdyrMUYWPAl1u7KFDXs1+ZQ==",
+  "dgSpecHash": "a10QYGCIjILjLLrKWDVMrXiVq0MPOis3T1D25DEb+QUYT/gmJ0ldS5uOldawhiOPMGqZbQGblEfP7YFtTIc9hA==",
   "success": true,
   "projectFilePath": "/home/Hari/if/c#/retronatus-backend/retronatus-backend.csproj",
   "expectedPackageFiles": [
+    "/home/Hari/.nuget/packages/azure.core/1.33.0/azure.core.1.33.0.nupkg.sha512",
+    "/home/Hari/.nuget/packages/azure.storage.blobs/12.17.0/azure.storage.blobs.12.17.0.nupkg.sha512",
+    "/home/Hari/.nuget/packages/azure.storage.common/12.16.0/azure.storage.common.12.16.0.nupkg.sha512",
     "/home/Hari/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/Hari/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/6.0.4/microsoft.aspnetcore.authentication.jwtbearer.6.0.4.nupkg.sha512",
     "/home/Hari/.nuget/packages/microsoft.aspnetcore.cors/2.2.0/microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",
     "/home/Hari/.nuget/packages/microsoft.aspnetcore.http.abstractions/2.2.0/microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
     "/home/Hari/.nuget/packages/microsoft.aspnetcore.http.extensions/2.2.0/microsoft.aspnetcore.http.extensions.2.2.0.nupkg.sha512",
     "/home/Hari/.nuget/packages/microsoft.aspnetcore.http.features/2.2.0/microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
+    "/home/Hari/.nuget/packages/microsoft.bcl.asyncinterfaces/1.1.1/microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "/home/Hari/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
     "/home/Hari/.nuget/packages/microsoft.entityframeworkcore/7.0.5/microsoft.entityframeworkcore.7.0.5.nupkg.sha512",
     "/home/Hari/.nuget/packages/microsoft.entityframeworkcore.abstractions/7.0.5/microsoft.entityframeworkcore.abstractions.7.0.5.nupkg.sha512",
@@ -44,11 +48,16 @@
     "/home/Hari/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.2.3/swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
     "/home/Hari/.nuget/packages/system.buffers/4.5.0/system.buffers.4.5.0.nupkg.sha512",
     "/home/Hari/.nuget/packages/system.codedom/4.4.0/system.codedom.4.4.0.nupkg.sha512",
+    "/home/Hari/.nuget/packages/system.diagnostics.diagnosticsource/4.6.0/system.diagnostics.diagnosticsource.4.6.0.nupkg.sha512",
     "/home/Hari/.nuget/packages/system.identitymodel.tokens.jwt/6.10.0/system.identitymodel.tokens.jwt.6.10.0.nupkg.sha512",
+    "/home/Hari/.nuget/packages/system.io.hashing/6.0.0/system.io.hashing.6.0.0.nupkg.sha512",
+    "/home/Hari/.nuget/packages/system.memory.data/1.0.2/system.memory.data.1.0.2.nupkg.sha512",
+    "/home/Hari/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
     "/home/Hari/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "/home/Hari/.nuget/packages/system.security.cryptography.cng/4.5.0/system.security.cryptography.cng.4.5.0.nupkg.sha512",
     "/home/Hari/.nuget/packages/system.text.encodings.web/7.0.0/system.text.encodings.web.7.0.0.nupkg.sha512",
-    "/home/Hari/.nuget/packages/system.text.json/7.0.0/system.text.json.7.0.0.nupkg.sha512"
+    "/home/Hari/.nuget/packages/system.text.json/7.0.0/system.text.json.7.0.0.nupkg.sha512",
+    "/home/Hari/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512"
   ],
   "logs": []
 }
